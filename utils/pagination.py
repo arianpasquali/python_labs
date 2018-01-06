@@ -57,7 +57,7 @@ class Paginator(object):
 		pages_mask[-self.boundaries:] = MASK_SHOWING_PAGE_NUMBER
 
 		# . mask around current page		
-		next_page_idx = (self.current_page - 1) + (self.around + 1)
+		next_page_idx = (self.current_page) + (self.around)
 		previous_page_idx = (self.current_page) - (self.around + 1)
 
 		pages_mask[current_page_idx:next_page_idx] = MASK_SHOWING_PAGE_NUMBER
