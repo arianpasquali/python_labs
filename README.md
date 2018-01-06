@@ -11,6 +11,10 @@ Simple exercise. Flexible pagination string generator.
 
 	> pytest -s
 
+At 'tests.test_pagination.py' you can enable/disable string generation details:
+
+	EXPLAIN_ENABLED = True
+
 ## Usage
 
 	from utils.pagination import Paginator
