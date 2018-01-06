@@ -75,10 +75,10 @@ class Paginator(object):
 		# . collect page numbers we want to show
 		visible_page_number_values = pages.take(visible_page_number_indexes)
 		
-		# . create empty list
+		# . create empty list, default value is '...'
 		pagination_links = np.repeat('...', self.total_pages)
 		
-		# . apply mask replacing ... for page numbers
+		# . apply mask replacing '...' for page numbers we want to show
 		pagination_links.put(visible_page_number_indexes[0], visible_page_number_values[0])
 
 		return pagination_links
@@ -91,7 +91,7 @@ class Paginator(object):
 		
 		# mark intervals we want to hide
 		pages_mask = self.__build_mask(pages)
-		
+
 		# apply mask
 		pagination_links = self.__apply_mask(pages_mask, pages)
 
