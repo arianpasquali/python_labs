@@ -9,6 +9,8 @@ Simple exercise. Flexible pagination string generator.
 
 ## Test
 
+In order to run the test suite and follow results, enable standard output.
+
 	> pytest -s
 
 At 'tests.test_pagination.py' you can enable/disable string generation details:
