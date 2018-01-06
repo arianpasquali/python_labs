@@ -42,6 +42,3 @@ At 'tests.test_pagination.py' you can enable/disable string generation details:
 ## Requirements
 
 * numpy
-
-## Compatibility
-* python2.7
