@@ -27,25 +27,13 @@ class Paginator(object):
 		if(self.current_page <= 0):
 			raise ValueError('current_page accepts only positive values. %f is invalid' % (self.current_page))
 
-	def paginate(self, explain=False):
+	
+	def __build_mask(self, pages):
+		' we create a mask to keep track of page numbers we want to show '
 
-		if(explain):
-			print(self)
-		
-		# create pages array
-		pages = np.arange(0, self.total_pages, 1, dtype=np.int)		
-
-		# adjust range values to start from one
-		pages = pages + 1
-
-		# convert to string
-		pages = np.array(map(str, pages))
-		
 		# this auxiliary array will serve as mask
 		pages_mask = pages.copy()
 
-		# we create a mask to keep track of page numbers we want to show
-		
 		# . mask current page index
 		current_page_idx = (self.current_page - 1)
 		pages_mask[current_page_idx] = MASK_SHOWING_PAGE_NUMBER
@@ -60,6 +48,27 @@ class Paginator(object):
 
 		pages_mask[current_page_idx:next_page_idx] = MASK_SHOWING_PAGE_NUMBER
 		pages_mask[previous_page_idx:current_page_idx] = MASK_SHOWING_PAGE_NUMBER
+
+		return pages_mask
+
+	
+	def paginate(self, explain=False):
+		'generate pagination string'
+
+		if(explain):
+			print(self)
+		
+		# create pages array
+		pages = np.arange(0, self.total_pages, 1, dtype=np.int)		
+
+		# adjust range values to start from one
+		pages = pages + 1
+
+		# convert to string
+		pages = np.array(map(str, pages))
+		
+		# mark intervals we want to hide
+		pages_mask = self.__build_mask(pages)
 
 		if(explain):
 			print(pages_mask)
@@ -80,7 +89,7 @@ class Paginator(object):
 		if(explain):
 			print(pagination_links)
 
-		# . group repeated '...' into a single sequence
+		# . ignore repeated '...' and group them into a single sequence
 		result = [k for k, g in itertools.groupby(pagination_links)]
 
 		if(explain):
