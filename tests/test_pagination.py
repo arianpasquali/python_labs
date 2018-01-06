@@ -157,6 +157,16 @@ def test_case_11():
 
 	assert result == "1 ... 10"	
 
+def test_case_12():
+	'Test large values'
+
+	paginator = Paginator(1000000,50000,1,3)
+	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+
+	pprint_result(paginator,result)
+
+	assert result == "1 ... 49997 49998 49999 50000 50001 50002 50003 ... 1000000"		
+
 
 def test_case_invalid_inputs_0():
 	'Test invalid input. Zero values.'

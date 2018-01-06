@@ -1,8 +1,8 @@
 import numpy as np
 import itertools
 
-MASK_SHOWING_PAGE_NUMBER = "#"
-MASK_HIDE_PAGE_NUMBER = "..."
+MASK_SHOWING_PAGE_NUMBER = 0
+# MASK_HIDE_PAGE_NUMBER = "..."
 
 class Paginator(object):
 
@@ -37,7 +37,7 @@ class Paginator(object):
 		pages = pages + 1
 
 		# convert to string
-		pages = np.array(map(str, pages))
+		# pages = np.array(map(str, pages))
 
 		return pages
 	
@@ -47,7 +47,7 @@ class Paginator(object):
 
 		# this auxiliary array will serve as mask
 		pages_mask = pages.copy()
-
+		
 		# . mask current page index
 		current_page_idx = (self.current_page - 1)
 		pages_mask[current_page_idx] = MASK_SHOWING_PAGE_NUMBER
@@ -73,13 +73,14 @@ class Paginator(object):
 				
 		# . collect page numbers we want to show
 		visible_page_number_values = pages.take(visible_page_number_indexes)
-		
+
 		# . create empty list, default value is '...'
-		pagination_links = np.repeat('...', self.total_pages)
+		pagination_links = np.zeros(self.total_pages, dtype=np.int)
+		# pagination_links = np.repeat('.', self.total_pages)
 		
 		# . apply mask replacing '...' for page numbers we want to show
 		pagination_links.put(visible_page_number_indexes[0], visible_page_number_values[0])
-
+		
 		return pagination_links
 	
 
@@ -90,12 +91,19 @@ class Paginator(object):
 		
 		# mark intervals we want to hide
 		pages_mask = self.__build_mask(pages)
-
+		
 		# apply mask
 		pagination_links = self.__apply_mask(pages_mask, pages)
-
-		# . ignore repeated '...' and group them into a single sequence
+		
+		# . ignore repeated values and group them into a single sequence
+		# replace mask value '0' by '...'
 		result = [k for k, g in itertools.groupby(pagination_links)]
+		result = np.array(map(str, result))	
+		result = result.astype(object)		
+
+		result[result == '0'] = "..."
+		
+		result = " ".join(result)
 		
 		# explain each step
 		if(explain): 
@@ -104,7 +112,7 @@ class Paginator(object):
 			print(pagination_links)
 			print(result)
 
-		result = " ".join(result)
+
 
 		return result
 
