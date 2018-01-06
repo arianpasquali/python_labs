@@ -27,6 +27,21 @@ class Paginator(object):
 		if(self.current_page <= 0):
 			raise ValueError('current_page accepts only positive values. %f is invalid' % (self.current_page))
 
+
+	def __create_sequence(self):
+		'create pagination sequence'
+
+		# create pages array
+		pages = np.arange(0, self.total_pages, 1, dtype=np.int)		
+
+		# adjust range values to start from one
+		pages = pages + 1
+
+		# convert to string
+		pages = np.array(map(str, pages))
+
+		return pages
+	
 	
 	def __build_mask(self, pages):
 		' we create a mask to keep track of page numbers we want to show '
@@ -51,28 +66,8 @@ class Paginator(object):
 
 		return pages_mask
 
-	
-	def paginate(self, explain=False):
-		'generate pagination string'
 
-		if(explain):
-			print(self)
-		
-		# create pages array
-		pages = np.arange(0, self.total_pages, 1, dtype=np.int)		
-
-		# adjust range values to start from one
-		pages = pages + 1
-
-		# convert to string
-		pages = np.array(map(str, pages))
-		
-		# mark intervals we want to hide
-		pages_mask = self.__build_mask(pages)
-
-		if(explain):
-			print(pages_mask)
-				
+	def __apply_mask(self, pages_mask, pages):
 		# Invert mask
 		# . find masked indexes
 		visible_page_number_indexes = np.where(pages_mask == MASK_SHOWING_PAGE_NUMBER)
@@ -86,13 +81,28 @@ class Paginator(object):
 		# . apply mask replacing ... for page numbers
 		pagination_links.put(visible_page_number_indexes[0], visible_page_number_values[0])
 
-		if(explain):
-			print(pagination_links)
+		return pagination_links
+	
+
+	def paginate(self, explain=False):
+		'generate pagination string'
+
+		pages = self.__create_sequence()
+		
+		# mark intervals we want to hide
+		pages_mask = self.__build_mask(pages)
+		
+		# apply mask
+		pagination_links = self.__apply_mask(pages_mask, pages)
 
 		# . ignore repeated '...' and group them into a single sequence
 		result = [k for k, g in itertools.groupby(pagination_links)]
-
-		if(explain):
+		
+		# explain each step
+		if(explain): 
+			print(self)
+			print(pages_mask)
+			print(pagination_links)
 			print(result)
 
 		result = " ".join(result)

@@ -1,21 +1,8 @@
 from utils.pagination import *
 import pytest
 
-# Test Coverage : The solution should be developed "test-first", and should have
-# good unit test coverage.
-
-# Simplicity : We value simplicity as an architectural virtue and a development practice. 
-# Solutions should reflect the difficulty of the assigned task, and should  not  be overly complex. 
-# Layers of abstraction, patterns, or architectural features that aren't called for should  
-# not  be included. 
-# Self-explanatory code : The solution you produce must speak for itself. 
-# Multiple paragraphs explaining the solution are a sign that it isn't  straightforward 
-# enough to understand purely by reading code, 
-# and are NOT appropriate.
-
-
 # Enable to explain string generation
-EXPLAIN_ENABLED = False
+EXPLAIN_ENABLED = True
 
 def pprint_result(paginator, result):
 	print("")
@@ -24,6 +11,7 @@ def pprint_result(paginator, result):
 	print("=" * 55)
 
 	
+
 def test_case_1():
 	
 	current_page = 3
@@ -168,6 +156,19 @@ def test_case_11():
 	pprint_result(paginator,result)
 
 	assert result == "1 ... 10"	
+
+
+def test_case_invalid_inputs_0():
+	'Test invalid input. Zero values.'
+
+	current_page = 0
+	total_pages = 0
+	boundaries = 0
+	around = 0
+
+	with pytest.raises(Exception) as e_info:
+		paginator = Paginator(total_pages, current_page, boundaries, around)
+		result = paginator.paginate()		
 
 def test_case_invalid_inputs_1():
 	'Test invalid input. Negative values.'
