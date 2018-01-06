@@ -3,7 +3,6 @@ import itertools
 
 MASK_SHOWING_PAGE_NUMBER = "#"
 MASK_HIDE_PAGE_NUMBER = "..."
-# DEBUG = True
 
 class Paginator(object):
 
