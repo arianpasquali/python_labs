@@ -34,5 +34,5 @@ In order to run the test suite and follow results, enable standard output.
 
 Evaluates wordt case scenario 10.000 times and prints the best performance result.
 
-	> python performance_test.py 10000
+	> python performance_evaluation.py 10000
 	> 10000 loops, best result: 10.013580322265625 milliseconds
