@@ -2,7 +2,6 @@ from utils.pagination import *
 import pytest
 
 # Enable to explain string generation
-EXPLAIN_ENABLED = True
 
 def pprint_result(paginator, result):
 	print("")
@@ -16,9 +15,18 @@ def test_case_1():
 	
 	current_page = 3
 	total_pages = 5
+	boundaries = 1
+	around = 0
+
 	
-	paginator = Paginator(total_pages, current_page)
+	current_page = 3
+	total_pages = 5
+	boundaries = 1
+	around = 0
+
+	paginator = Paginator(total_pages, current_page, boundaries, around)
 	result = paginator.paginate()
+
 
 	pprint_result(paginator,result)
 	
@@ -32,7 +40,7 @@ def test_case_2():
 	around = 0
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -45,7 +53,7 @@ def test_case_3():
 	around = 0
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -58,7 +66,7 @@ def test_case_4():
 	around = 2
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -71,7 +79,7 @@ def test_case_5():
 	around = 2
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -84,7 +92,7 @@ def test_case_6():
 	around = 3
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -98,7 +106,7 @@ def test_case_7():
 	around = 1
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -112,7 +120,7 @@ def test_case_8():
 	around = 2
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -126,7 +134,7 @@ def test_case_9():
 	around = 2
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -139,7 +147,7 @@ def test_case_10():
 	around = 1
 
 	paginator = Paginator(total_pages, current_page, boundaries, around)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -148,10 +156,13 @@ def test_case_10():
 def test_case_11():
 	'Test default values'
 
+	current_page = 1
 	total_pages = 10
+	boundaries = 1
+	around = 0
 
-	paginator = Paginator(total_pages)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	paginator = Paginator(total_pages, current_page, boundaries, around)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
@@ -161,12 +172,56 @@ def test_case_12():
 	'Test large values'
 
 	paginator = Paginator(1000000,50000,1,3)
-	result = paginator.paginate(explain=EXPLAIN_ENABLED)
+	result = paginator.paginate()
 
 	pprint_result(paginator,result)
 
 	assert result == "1 ... 49997 49998 49999 50000 50001 50002 50003 ... 1000000"		
 
+def test_case_13():
+	'Test large values'
+
+	paginator = Paginator(2500000000,1500000000,1,3)
+	result = paginator.paginate()
+
+	pprint_result(paginator,result)
+
+	assert result == "1 ... 1499999997 1499999998 1499999999 1500000000 1500000001 1500000002 1500000003 ... 2500000000"
+
+
+def test_case_14():
+	'Test wierd values'
+
+	paginator = Paginator(100,3,10,2)
+	result = paginator.paginate()
+
+	pprint_result(paginator,result)
+
+	assert result == "1 2 3 4 5 6 7 8 9 10 ... 91 92 93 94 95 96 97 98 99 100"
+
+def test_case_15():
+	'Test zero values'
+	current_page = 4
+	total_pages = 5
+	boundaries = 0
+	around = 0
+
+	paginator = Paginator(total_pages, current_page, boundaries, around)
+	result = paginator.paginate()
+
+	pprint_result(paginator,result)
+
+	assert result == "... 4 ..."
+
+def test_case_16():
+	'Large values'
+
+	paginator = Paginator(2147483647,147483647,3,3)
+	result = paginator.paginate()
+
+	pprint_result(paginator,result)
+	
+	assert result == "1 2 3 ... 147483644 147483645 147483646 147483647 147483648 147483649 147483650 ... 2147483645 2147483646 2147483647"
 
 def test_case_invalid_inputs_0():
 	'Test invalid input. Zero values.'
@@ -178,7 +233,8 @@ def test_case_invalid_inputs_0():
 
 	with pytest.raises(Exception) as e_info:
 		paginator = Paginator(total_pages, current_page, boundaries, around)
-		result = paginator.paginate()		
+		result = paginator.paginate()	
+
 
 def test_case_invalid_inputs_1():
 	'Test invalid input. Negative values.'
