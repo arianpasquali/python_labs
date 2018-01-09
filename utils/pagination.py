@@ -31,7 +31,7 @@ class Paginator(object):
 		sequence += following_sequence
 		return sequence
 
-	def paginate(self, explain=False):
+	def paginate(self):
 		
 		head = []
 		mid = []
