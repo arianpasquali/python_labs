@@ -23,18 +23,24 @@ class Paginator(object):
 		if(self.current_page <= 0):
 			raise ValueError('current_page accepts only positive values. %f is invalid' % (self.current_page))
 
-	
+	def __handle_sequence_intervals(self,sequence,following_sequence):
+		if(len(sequence) > 0 and len(following_sequence) > 0):
+			if((sequence[-1] + 1) < following_sequence[0]):
+				# interval symbol
+				sequence += "."
+		sequence += following_sequence
+		return sequence
+
 	def paginate(self, explain=False):
 		
 		head = []
 		mid = []
 		tail = []
-
 		sequence = []
 		
 		# head
 		if(self.boundaries > 0):
-			head = range(1,self.boundaries + 1)		
+			head = range(1,self.boundaries + 1)
 		
 		# tail
 		tail = range(self.total_pages - self.boundaries + 1, self.total_pages + 1)
@@ -47,38 +53,38 @@ class Paginator(object):
 			mid = range(start_mid,end_mid)
 		else:
 			mid = [self.current_page]
-
-		head = sorted(list(head))
-
+		
+		# ignore intersection
 		mid = set(mid) - set(head)
 		mid = sorted(list(mid))
 		
+		# ignore intersection
 		tail = set(tail) - set(mid)
 		tail = sorted(list(tail))
 
+		# concatenate final integer sequence
 		sequence += head
 
-		if(len(sequence) > 0 and len(mid) > 0):
-			if((sequence[-1] + 1) < mid[0]):
-				sequence += "."
+		# handle sequences and intervals
+		# head to midle
+		sequence = self.__handle_sequence_intervals(sequence, mid)
+		# midle to tail
+		sequence = self.__handle_sequence_intervals(sequence, tail)
 		
-		sequence += mid
+		# in the end, handle symbols for zero boundaries
+		if(self.boundaries == 0):
+			# start sequence with symbol
+		 	if(self.current_page - self.around > 1):
+				sequence = ["."] + sequence
 
-		if(len(sequence) > 0 and len(tail) > 0):
-			if((sequence[-1] + 1) < tail[0]):
+		 	# end sequence with symbol
+		 	if (self.current_page + self.around < self.total_pages):
 				sequence += "."
-		
-		sequence += tail
 
-		# handle zero boundaries
-		if(self.boundaries == 0 and self.current_page + self.around < self.total_pages):
-			sequence += "."
-
-		if(self.boundaries == 0 and self.current_page - self.around > 1):
-			sequence = ["."] + sequence
-
-		# convert all to string
+		# make sure all values are string
 		sequence = map(str,sequence)
+
+		# build final string sequence
 		result = " ".join(sequence)
 
 		# '...' may be treated as [".",".","."]
