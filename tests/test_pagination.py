@@ -5,11 +5,9 @@ import pytest
 
 def pprint_result(paginator, result):
 	print("")
-	# print(paginator)
+	print(paginator)
 	print(result)
 	print("=" * 55)
-
-	
 
 def test_case_1():
 	
