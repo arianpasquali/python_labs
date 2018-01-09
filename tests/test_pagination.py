@@ -214,6 +214,20 @@ def test_case_15():
 	assert result == "... 4 ..."
 
 def test_case_16():
+	'Test zero values'
+	current_page = 4
+	total_pages = 5
+	boundaries = 0
+	around = 1
+
+	paginator = Paginator(total_pages, current_page, boundaries, around)
+	result = paginator.paginate()
+
+	pprint_result(paginator,result)
+
+	assert result == "... 3 4 5"
+
+def test_case_17():
 	'Large values'
 
 	paginator = Paginator(2147483647,147483647,3,3)
