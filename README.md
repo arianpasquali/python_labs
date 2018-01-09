@@ -9,9 +9,9 @@ Simple exercise. Flexible pagination string generator.
 
 ## Test
 
-In order to run the test suite and follow results, enable standard output.
+In order to run the test suite use pytest.
 
-	> pytest -s
+	> pytest
 
 	test session starts ===
 	collected 21 items
@@ -19,6 +19,10 @@ In order to run the test suite and follow results, enable standard output.
 	tests/test_pagination.py .....................                                                                [100%]
 
 	21 passed in 0.78 seconds ===
+
+For debuging the output enable standard output:
+
+	> pytest -s
 
 ## Usage
 
