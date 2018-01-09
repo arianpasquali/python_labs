@@ -28,3 +28,11 @@ In order to run the test suite and follow results, enable standard output.
 	print(result)
 
 	> 1 2 ... 4 5 6 ... 9 10	
+
+
+## Performance test
+
+Evaluates wordt case scenario 10.000 times and prints the best performance result.
+
+	> python performance_test.py 10000
+	> 10000 loops, best result: 10.013580322265625 milliseconds
