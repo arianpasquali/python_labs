@@ -20,7 +20,7 @@ In order to run the test suite use pytest.
 
 	21 passed in 0.78 seconds ===
 
-For debuging the output enable standard output:
+In order to debug the output enable standard output:
 
 	> pytest -s
 
