@@ -33,10 +33,7 @@ class Paginator(object):
 
 	def paginate(self):
 		
-		head = []
-		mid = []
-		tail = []
-		sequence = []
+		head, mid, tail = [], [], []
 		
 		# head
 		if(self.boundaries > 0):
@@ -63,6 +60,7 @@ class Paginator(object):
 		tail = sorted(list(tail))
 
 		# concatenate final integer sequence
+		sequence = []
 		sequence += head
 
 		# handle sequences and intervals
