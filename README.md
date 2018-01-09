@@ -13,12 +13,12 @@ In order to run the test suite and follow results, enable standard output.
 
 	> pytest -s
 
-	test session starts ================================================
+	test session starts ===
 	collected 21 items
 
 	tests/test_pagination.py .....................                                                                [100%]
 
-	 21 passed in 0.78 seconds =============================================
+	21 passed in 0.78 seconds ===
 
 ## Usage
 
